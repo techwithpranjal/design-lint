@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "DesignLint",
+  "description": "Lightweight UI design scoring and layout analysis for any webpage.",
+  "version": "0.1.0",
+
+  "action": {
+    "default_title": "DesignLint",
+    "default_popup": "index.html"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["activeTab", "tabs", "scripting"],
+
+  "host_permissions": ["<all_urls>"]
+}
