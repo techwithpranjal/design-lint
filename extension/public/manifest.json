@@ -20,7 +20,7 @@
       "run_at": "document_idle"
     }
   ],
-  "permissions": ["activeTab", "tabs", "scripting"],
+  "permissions": ["activeTab", "tabs", "scripting", "storage"],
 
   "host_permissions": ["<all_urls>"]
 }
