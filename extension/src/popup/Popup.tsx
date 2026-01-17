@@ -3,6 +3,7 @@ import EmptyResultsView from "./views/EmptyState";
 import NewScanState from "./views/NewScanState";
 import LoaderState from "./views/LoaderState";
 import ResultsView from "./views/ResultsState";
+import { runScan } from "../scan";
 
 export default function Popup() {
   const runtime =
@@ -99,30 +100,9 @@ export default function Popup() {
 
     console.log("Simulating scan...", storage);
 
-    setTimeout(() => {
-      const mockResult = {
-        overallScore: 78,
-        metrics: {
-          Accessibility: metrics.accessibility
-            ? { score: 82, issues: 4 }
-            : undefined,
-          Readability: metrics.readability
-            ? { score: 74, level: "Intermediate" }
-            : undefined,
-          "Layout Density": metrics.layout_density
-            ? { score: 88, sections: 6 }
-            : undefined,
-          "Visual Hierarchy": metrics.visual_hierarchy
-            ? { score: 69, density: "High" }
-            : undefined,
-        },
-        findings: [
-          "Low contrast text detected in header.",
-          "Long paragraphs found, consider breaking them up.",
-          "Dense layout in the main content area.",
-          "Inconsistent heading sizes across sections.",
-        ],
-      };
+    setTimeout(async () => {
+      
+      const mockResult = await runScan(metrics);
 
       storage?.set({ lastScanResult: mockResult }, () => {
         console.log("Scan completed:", mockResult);

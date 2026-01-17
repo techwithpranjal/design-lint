@@ -2,7 +2,11 @@ import { useState } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-export default function NewScanState({ onStart }: { onStart: (metrics: any) => void }) {
+export default function NewScanState({
+  onStart,
+}: {
+  onStart: (metrics: any) => void;
+}) {
   const SCAN_METRICS: {
     key: string;
     label: string;
@@ -21,13 +25,13 @@ export default function NewScanState({ onStart }: { onStart: (metrics: any) => v
         "Analyzes text density and clarity, how comprehensible the content is.",
     },
     {
-      key: "layout-density",
+      key: "layout_density",
       label: "Layout Density",
       description:
         "Evaluates structure and spacing, how well is the content organized.",
     },
     {
-      key: "visual-hierarchy",
+      key: "visual_hierarchy",
       label: "Visual Hierarchy",
       description:
         "Measures clutter and element distribution, how the page feels at a glance.",
@@ -66,9 +70,12 @@ export default function NewScanState({ onStart }: { onStart: (metrics: any) => v
                 <input
                   type="checkbox"
                   className="accent-cyan-400"
-                  checked={metrics.accessibility}
+                  checked={metrics[metric.key as keyof typeof metrics]}
                   onChange={(e) =>
-                    setMetrics({ ...metrics, accessibility: e.target.checked })
+                    setMetrics((prev) => ({
+                      ...prev,
+                      [metric.key]: e.target.checked,
+                    }))
                   }
                 />
                 <span className="text-sm text-zinc-200">{metric.label}</span>
@@ -85,6 +92,9 @@ export default function NewScanState({ onStart }: { onStart: (metrics: any) => v
           onClick={() => onStart(metrics)}
           className="rounded-md bg-cyan-500/10 border border-cyan-500/30
                      text-cyan-400 text-sm py-2 hover:bg-cyan-500/20 transition"
+          disabled={
+            !Object.values(metrics).some((isEnabled) => isEnabled)
+          }
         >
           Start scan
         </button>
