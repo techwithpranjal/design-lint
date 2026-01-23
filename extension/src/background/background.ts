@@ -10,25 +10,13 @@ runtime?.onInstalled?.addListener(() => {
 
 runtime.onMessage.addListener(
   (
-    message: { type: string },
-    _sender: unknown,
-    sendResponse: (response: { type: string }) => void
-  ) => {
-    if (message.type === "PING") {
-      console.log("[Background] received PING");
-      sendResponse({ type: "PONG" });
-    }
-  }
-);
-
-runtime.onMessage.addListener(
-  (
-    message: { type: string },
+    message: { type: string; payload?: any },
     _sender: any,
     sendResponse: (arg0: any) => void
   ) => {
-    if (message.type === "HELLO_FROM_POPUP") {
-      console.log("[Background] forwarding HELLO_FROM_POPUP to content script");
+    if (message.type === "START_SCAN") {
+      console.log("[Background] forwarding START_SCAN to content script");
+
       tabs.query({ active: true, currentWindow: true }, (tabsList: any[]) => {
         console.log("[Background] active tab:", tabsList?.[0]);
         const tabId = tabsList?.[0]?.id;
@@ -38,9 +26,10 @@ runtime.onMessage.addListener(
 
         tabs.sendMessage(
           tabId,
-          { type: "HELLO_FROM_POPUP" },
+          { type: "START_SCAN", payload: message.payload },
           (response: any) => {
             sendResponse(response);
+            return true;
           }
         );
       });

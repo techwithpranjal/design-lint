@@ -3,7 +3,6 @@ import EmptyResultsView from "./views/EmptyState";
 import NewScanState from "./views/NewScanState";
 import LoaderState from "./views/LoaderState";
 import ResultsView from "./views/ResultsState";
-import { runScan } from "../scan";
 
 export default function Popup() {
   const runtime =
@@ -15,15 +14,21 @@ export default function Popup() {
   const [view, setView] = useState<View>("results");
 
   useEffect(() => {
-    runtime.sendMessage({ type: "PING" }, (response: any) => {
-      console.log("[Popup] response from background:", response);
+    runtime.onMessage.addListener((message: any) => {
+      if (message.type === "SCAN_RESULT") {
+        console.log("Received scan result in popup:", message.payload);
+        const storage =
+          (globalThis as any).chrome?.storage?.local ||
+          (globalThis as any).browser?.storage?.local;
 
-      runtime.sendMessage(
-        { type: "HELLO_FROM_POPUP" },
-        (contentResponse: any) => {
-          console.log("[Popup] response from content:", contentResponse);
-        }
-      );
+        storage.set({ lastScanResult: message.payload }, () =>
+          setView("results")
+        );
+      }
+      if (message.type === "SCAN_ERROR") {
+        console.error(message.error);
+        setView("results");
+      }
     });
   }, []);
 
@@ -38,6 +43,7 @@ export default function Popup() {
     }
 
     storage.get(["lastScanResult"], (res: { lastScanResult?: unknown }) => {
+      console.log("Fetched last scan result from storage:", res);
       setHasResults(!!res?.lastScanResult);
     });
 
@@ -48,6 +54,7 @@ export default function Popup() {
       if (area !== "local") return;
 
       if ("lastScanResult" in changes) {
+        console.log("Fetched last scan result from storage:", changes);
         setHasResults(!!changes.lastScanResult?.newValue);
       }
     };
@@ -62,6 +69,10 @@ export default function Popup() {
       storageApi?.onChanged?.removeListener(onStorageChange);
     };
   }, []);
+
+  useEffect(() => {
+    console.log("hasResults changed:", hasResults);
+  }, [hasResults]);
 
   const onNewScanHandler = () => {
     console.log("New scan clicked");
@@ -84,31 +95,20 @@ export default function Popup() {
     layout_density: boolean;
     visual_hierarchy: boolean;
   }) => {
-    const payload = {
-      url: window.location.href,
-      timestamp: Date.now(),
-      metrics,
-    };
-
-    console.log("Starting scan with payload:", payload);
+    console.log("Starting scan with metrics:", metrics);
 
     setView("loading");
 
-    const storage =
-      (globalThis as any).chrome?.storage?.local ||
-      (globalThis as any).browser?.storage?.local;
+    const runtime =
+      (globalThis as any).chrome?.runtime ||
+      (globalThis as any).browser?.runtime;
 
-    console.log("Simulating scan...", storage);
-
-    setTimeout(async () => {
-      
-      const mockResult = await runScan(metrics);
-
-      storage?.set({ lastScanResult: mockResult }, () => {
-        console.log("Scan completed:", mockResult);
-        setView("results");
-      });
-    }, 2000);
+    runtime.sendMessage({
+      type: "START_SCAN",
+      payload: {
+        metrics,
+      },
+    });
   };
 
   return (
