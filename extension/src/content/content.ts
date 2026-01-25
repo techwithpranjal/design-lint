@@ -31,14 +31,13 @@ window.addEventListener("message", (event) => {
       payload: {
         url: window.location.href,
         scannedAt: Date.now(),
-        // overallScore: normalized.score,
+        overallScore: normalized.score,
         metrics: {
           Accessibility: {
             score: normalized.score,
-            summary: `${normalized.issueCount} issues detected`,
-            meta: {
-              breakdown: normalized.breakdown,
-            },
+            issueCount: normalized.issueCount,
+            breakdown: normalized.breakdown,
+            topIssues: normalized.topIssues,
           },
         },
         findings: normalized.topIssues,
