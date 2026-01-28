@@ -70,10 +70,6 @@ export default function Popup() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log("hasResults changed:", hasResults);
-  }, [hasResults]);
-
   const onNewScanHandler = () => {
     console.log("New scan clicked");
     const storage =
