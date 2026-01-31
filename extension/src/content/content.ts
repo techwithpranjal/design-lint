@@ -43,6 +43,19 @@ runtime.onMessage.addListener((message: any) => {
         },
       });
     }
+
+    if (metric === "Visual Hierarchy") {
+      const elements = getVisibleHierarchyElements();
+      const hierarchy = analyzeVisualHierarchy(elements);
+
+      runtime.sendMessage({
+        type: "METRIC_SCAN_RESULT",
+        payload: {
+          metric: "Visual Hierarchy",
+          data: hierarchy,
+        },
+      });
+    }
   }
 });
 
@@ -318,4 +331,140 @@ function getAverageVerticalSpacing(elements: HTMLElement[]): number {
 
   if (!gaps.length) return 0;
   return Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length);
+}
+
+function analyzeVisualHierarchy(elements: HTMLElement[]) {
+  const scored = elements.map((el) => {
+    const style = window.getComputedStyle(el);
+    const fontSize = parseFloat(style.fontSize) || 0;
+    const fontWeight = parseInt(style.fontWeight) || 400;
+    const rect = el.getBoundingClientRect();
+
+    return {
+      el,
+      fontSize,
+      fontWeight,
+      area: rect.width * rect.height,
+    };
+  });
+
+  scored.sort((a, b) => b.fontSize * b.fontWeight - a.fontSize * a.fontWeight);
+
+  const dominantElements = scored.slice(0, 10);
+
+  const primaryFocusCount = dominantElements.filter(
+    (e) => e.fontSize >= dominantElements[0].fontSize * 0.9
+  ).length;
+
+  const headingSizes = scored
+    .filter((e) => e.el.tagName.match(/^H[1-6]$/))
+    .map((e) => e.fontSize);
+
+  const headingScaleVariance =
+    headingSizes.length > 1
+      ? Math.max(...headingSizes) - Math.min(...headingSizes)
+      : 0;
+
+  const ctas = elements.filter((el) => ["BUTTON", "A"].includes(el.tagName));
+
+  const ctaVisibilityScore = Math.min(100, ctas.length * 20);
+
+  const emphasisContrastScore = Math.min(
+    100,
+    Math.round(headingScaleVariance * 5)
+  );
+
+  const headingLevelsUsed = new Set(
+    elements
+      .filter((el) => el.tagName.match(/^H[1-6]$/))
+      .map((el) => el.tagName)
+  ).size;
+
+  const findings: string[] = [];
+
+  if (primaryFocusCount > 1) {
+    findings.push("Multiple elements compete for primary visual attention.");
+  }
+
+  if (headingScaleVariance < 6) {
+    findings.push("Heading sizes lack a clear visual hierarchy.");
+  }
+
+  if (ctaVisibilityScore < 40) {
+    findings.push("Primary call-to-action does not stand out visually.");
+  }
+
+  const focusPenalty = Math.min(primaryFocusCount - 1, 3) * 12;
+
+  const hierarchyPenalty = headingScaleVariance < 6 ? 15 : 0;
+
+  const ctaPenalty = ctaVisibilityScore < 40 ? 15 : 0;
+
+  const richnessPenalty = headingLevelsUsed < 2 ? 10 : 0;
+
+  const score =
+    100 - focusPenalty - hierarchyPenalty - ctaPenalty - richnessPenalty;
+
+  if (primaryFocusCount > 1) {
+    findings.push(
+      "Multiple large elements compete for attention, making it hard to identify the primary focus."
+    );
+  } else {
+    findings.push(
+      "A single dominant element clearly establishes primary visual focus."
+    );
+  }
+
+  if (headingScaleVariance < 6) {
+    findings.push(
+      "Heading sizes are too similar, reducing clarity between content levels."
+    );
+  } else if (headingScaleVariance > 18) {
+    findings.push(
+      "Large jumps in heading sizes may feel visually abrupt or inconsistent."
+    );
+  } else {
+    findings.push(
+      "Heading sizes scale well, supporting a clear visual hierarchy."
+    );
+  }
+
+  if (ctaVisibilityScore < 40) {
+    findings.push(
+      "Primary call-to-action does not stand out strongly from surrounding elements."
+    );
+  } else {
+    findings.push(
+      "Call-to-action elements are visually prominent and easy to locate."
+    );
+  }
+
+  if (primaryFocusCount > 3) {
+    findings.push(
+      "Too many visually emphasized elements may overwhelm users at first glance."
+    );
+  }
+
+  return {
+    score: Math.max(0, Math.min(100, score)),
+    primaryFocusCount,
+    headingScaleVariance,
+    emphasisContrastScore,
+    ctaVisibilityScore,
+    findings,
+  };
+}
+
+function getVisibleHierarchyElements(): HTMLElement[] {
+  return Array.from(document.querySelectorAll<HTMLElement>("*")).filter(
+    (el) => {
+      const style = window.getComputedStyle(el);
+      return (
+        el.offsetWidth > 0 &&
+        el.offsetHeight > 0 &&
+        style.visibility !== "hidden" &&
+        style.display !== "none"
+      );
+    }
+  );
 }

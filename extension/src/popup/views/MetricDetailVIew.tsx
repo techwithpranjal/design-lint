@@ -43,6 +43,14 @@ export default function MetricDetailView({
         return "Layout is somewhat dense with signs of crowding or deep nesting.";
       }
       return "Layout is visually dense and cluttered, which may overwhelm users and reduce clarity.";
+    } else if (label === "Visual Hierarchy") {
+      if (data.score >= 75) {
+        return "Clear visual emphasis guides users naturally through the page.";
+      }
+      if (data.score >= 50) {
+        return "Some visual hierarchy exists, but key elements compete for attention.";
+      }
+      return "Weak visual hierarchy makes it difficult to identify important content.";
     }
   }
 
@@ -220,6 +228,50 @@ export default function MetricDetailView({
                   between content sections.
                 </li>
               )}
+            </ul>
+          </div>
+        </>
+      )}
+
+      {label === "Visual Hierarchy" && (
+        <>
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-3">
+              Visual emphasis signals
+            </div>
+
+            <div className="space-y-2 text-xs text-zinc-400">
+              <div className="flex justify-between">
+                <span>Primary focus elements</span>
+                <span>{data.primaryFocusCount}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Heading size variance</span>
+                <span>{data.headingScaleVariance}px</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Emphasis contrast score</span>
+                <span>{data.emphasisContrastScore}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>CTA visibility score</span>
+                <span>{data.ctaVisibilityScore}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-2">
+              Visual hierarchy assessment
+            </div>
+
+            <ul className="space-y-1 text-xs text-zinc-500 list-disc list-inside">
+              {data.findings?.map((finding: string, idx: number) => (
+                <li key={idx}>{finding}</li>
+              ))}
             </ul>
           </div>
         </>
