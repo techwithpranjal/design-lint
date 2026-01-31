@@ -208,15 +208,16 @@ Visual Hierarchy evaluates whether the page clearly communicates **what matters 
 
 DesignLint is provided as an **unpacked demo extension**.
 
-Download the latest build from GitHub Releases:  
+Download the latest build zip folder named Design-Lint-Extension-latest-version.zip from GitHub Releases:  
 👉 https://github.com/techwithpranjal/design-lint/releases
 
 ### Install (Chrome / Edge / Chromium)
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the extracted build folder
+1.  Unzip the folder downloaded from release section
+2.  Open `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the extracted build folder
 
 
 
