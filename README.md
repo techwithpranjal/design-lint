@@ -148,28 +148,28 @@ Visual Hierarchy evaluates whether the page clearly communicates **what matters 
 > Screenshots are listed in the same order as the user workflow.
 
 ### 1. Empty state (no scans yet)
-![Empty state](/extension/src/assets/asset1.png)
+<img src="/extension/src/assets/asset1.png" width="360" alt="Empty state" />
 
 ### 2. New scan – metric selection
-![Metric selection](/extension/src/assets/asset2.png)
+<img src="/extension/src/assets/asset2.png" width="360" alt="Metric selection" />
 
 ### 3. Scan in progress (loading state)
-![Loading state](/extension/src/assets/asset3.png)
+<img src="/extension/src/assets/asset3.png" width="360" alt="Loading state" />
 
 ### 4. Results overview
-![Results overview](/extension/src/assets/asset4.png)
+<img src="/extension/src/assets/asset4.png" width="360" alt="Results overview" />
 
 ### 5. Accessibility – detailed view
-![Accessibility details](/extension/src/assets/asset5.png)
+<img src="/extension/src/assets/asset5.png" width="360" alt="Accessibility details" />
 
 ### 6. Readability – detailed view
-![Readability details](/extension/src/assets/asset6.png)
+<img src="/extension/src/assets/asset6.png" width="360" alt="Readability details" />
 
 ### 7. Layout density – detailed view
-![Layout density details](/extension/src/assets/asset7.png)
+<img src="/extension/src/assets/asset7.png" width="360" alt="Layout density details" />
 
 ### 8. Visual hierarchy – detailed view
-![Visual hierarchy details](/extension/src/assets/asset8.png)
+<img src="/extension/src/assets/asset8.png" width="360" alt="Visual hierarchy details" />
 
 
 
