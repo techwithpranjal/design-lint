@@ -162,11 +162,11 @@ Visual Hierarchy evaluates whether the page clearly communicates **what matters 
 ### 5. Accessibility – detailed view
 <img src="/extension/src/assets/asset5.png" width="360" alt="Accessibility details" />
 
-### 6. Readability – detailed view
-<img src="/extension/src/assets/asset6.png" width="360" alt="Readability details" />
-
 ### 7. Layout density – detailed view
-<img src="/extension/src/assets/asset7.png" width="360" alt="Layout density details" />
+<img src="/extension/src/assets/asset6.png" width="360" alt="Layout density details" />
+
+### 7. Readability – detailed view
+<img src="/extension/src/assets/asset7.png" width="360" alt="Readability details" />
 
 ### 8. Visual hierarchy – detailed view
 <img src="/extension/src/assets/asset8.png" width="360" alt="Visual hierarchy details" />
