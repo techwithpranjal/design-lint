@@ -10,7 +10,7 @@ runtime.onMessage.addListener((message: any) => {
     const metric = message.payload.metric;
     console.log(`[Content] Running scan for metric: ${metric}`);
 
-    if (metric === "accessibility") {
+    if (metric === "Accessibility") {
       injectOnce("axe.min.js", () => {
         injectOnce("axe-bridge.js", () => {
           window.postMessage({ source: "designlint", type: "RUN_AXE" }, "*");
@@ -18,7 +18,7 @@ runtime.onMessage.addListener((message: any) => {
       });
     }
 
-    if (metric === "readability") {
+    if (metric === "Readability") {
       const text = collectReadableText();
       const readability = analyzeReadability(text);
 
@@ -139,6 +139,8 @@ function analyzeReadability(text: string) {
     .map((p) => p.trim())
     .filter(Boolean);
 
+  const readingTimeMinutes = Math.ceil(words.length / 200);
+
   const syllableCount = words.reduce((sum, w) => sum + countSyllables(w), 0);
 
   const wordsPerSentence =
@@ -171,5 +173,49 @@ function analyzeReadability(text: string) {
     avgSentenceLength: Math.round(wordsPerSentence),
     avgParagraphLength: Math.round(avgParagraphLength),
     longParagraphs,
+    readingTime: readingTimeMinutes,
+    findings: readabilityFindings({
+      score,
+      avgSentenceLength: wordsPerSentence,
+      avgParagraphLength,
+      longParagraphs,
+      readingTime: readingTimeMinutes,
+    }),
   };
+}
+
+function readabilityFindings(data: {
+  score: number;
+  avgSentenceLength: number;
+  avgParagraphLength: number;
+  longParagraphs: number;
+  readingTime: number;
+}) {
+  const findings: string[] = [];
+
+  if (data.avgSentenceLength > 20) {
+    findings.push(
+      "Sentences are longer than average, which may reduce readability."
+    );
+  }
+
+  if (data.longParagraphs > 0) {
+    findings.push(
+      `${data.longParagraphs} long paragraphs detected. Consider breaking them up.`
+    );
+  }
+
+  if (data.score < 50) {
+    findings.push(
+      "Text complexity is high and may be difficult for a general audience."
+    );
+  }
+
+  if (data.readingTime > 5) {
+    findings.push(
+      "Estimated reading time is high. Consider adding summaries or headings."
+    );
+  }
+
+  return findings.slice(0, 3);
 }

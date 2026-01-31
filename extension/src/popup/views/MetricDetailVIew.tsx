@@ -14,14 +14,26 @@ export default function MetricDetailView({
 }) {
   console.log("Rendering MetricDetailView with data:", data);
 
-  function metricSummary(issueCount: number) {
-    if (issueCount === 0) {
-      return "No accessibility issues detected. The page meets basic accessibility standards.";
+  function metricSummary(data: MetricValue) {
+    if (label === "Accessibility") {
+      const issueCount = data.issueCount || 0;
+      if (issueCount === 0) {
+        return "No accessibility issues detected. The page meets basic accessibility standards.";
+      }
+      if (issueCount <= 3) {
+        return "Minor accessibility issues detected that may affect some users.";
+      }
+      return "Multiple accessibility issues detected that could impact screen reader and keyboard users.";
+    } else if (label === "Readability") {
+      const score = data.score || 0;
+      if (score >= 70) {
+        return "Text is easy to read and suitable for a broad audience.";
+      }
+      if (score >= 50) {
+        return "Text is moderately readable but may require effort for some users.";
+      }
+      return "Text is difficult to read and may overwhelm users with long sentences or dense paragraphs.";
     }
-    if (issueCount <= 3) {
-      return "Minor accessibility issues detected that may affect some users.";
-    }
-    return "Multiple accessibility issues detected that could impact screen reader and keyboard users.";
   }
 
   return (
@@ -42,13 +54,16 @@ export default function MetricDetailView({
               {data.score}
             </span>
             <span className="text-xs text-zinc-500">/ 100</span>
+            {label === "Readability" && (
+              <span className="ml-2 text-xs text-zinc-400">
+                Grade: {data.grade} · ~{data.readingTime} min read
+              </span>
+            )}
           </div>
         </div>
 
         <div className="mt-2 text-xs leading-relaxed text-zinc-400">
-          {label === "Accessibility"
-            ? metricSummary(data.issueCount)
-            : "Detailed information about this metric will be available soon."}
+          {metricSummary(data)}
         </div>
       </div>
 
@@ -58,7 +73,7 @@ export default function MetricDetailView({
             <div className="text-sm text-zinc-200 mb-2">Issue severity</div>
 
             <span className="text-xs text-zinc-500 mb-3 block">
-              Total issues : {data.issueCount} 
+              Total issues : {data.issueCount}
             </span>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-between text-red-400">
@@ -86,6 +101,43 @@ export default function MetricDetailView({
             <ul className="space-y-1 text-xs text-zinc-500 list-disc list-inside">
               {data.topIssues?.map((issue: string, idx: number) => (
                 <li key={idx}>{issue}</li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
+
+      {label === "Readability" && (
+        <>
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-3">
+              Text characteristics
+            </div>
+
+            <div className="space-y-2 text-xs text-zinc-400">
+              <div className="flex justify-between">
+                <span>Average sentence length</span>
+                <span>{data.avgSentenceLength} words</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Average paragraph length</span>
+                <span>{data.avgParagraphLength} words</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Long paragraphs</span>
+                <span>{data.longParagraphs}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-2">Top findings</div>
+
+            <ul className="space-y-1 text-xs text-zinc-500 list-disc list-inside">
+              {data.findings?.map((finding: string, idx: number) => (
+                <li key={idx}>{finding}</li>
               ))}
             </ul>
           </div>

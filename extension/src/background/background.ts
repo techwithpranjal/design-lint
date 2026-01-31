@@ -1,4 +1,9 @@
-import type { ActiveScan } from "../scan/messages";
+type ActiveScan = {
+  url: string;
+  overallScore: number;
+  metrics: Record<string, any>;
+  findings: string[];
+};
 
 const runtime =
   (globalThis as any).chrome?.runtime || (globalThis as any).browser?.runtime;
@@ -10,6 +15,7 @@ runtime?.onInstalled?.addListener(() => {
 });
 
 let activeScan: ActiveScan | null = null;
+let metricsRequested: string[] = [];
 
 runtime.onMessage.addListener((message: { type: string; payload?: any }) => {
   if (message.type === "START_SCAN") {
@@ -18,16 +24,22 @@ runtime.onMessage.addListener((message: { type: string; payload?: any }) => {
       if (!tab?.id) return;
 
       const metrics = message.payload.metrics;
-      const metricsKeys = Object.keys(metrics).filter((metric => metrics[metric]));
+      const metricsKeys = Object.keys(metrics).filter(
+        (metric) => metrics[metric]
+      );
+      metricsRequested = metricsKeys;
+
+      console.log(
+        "[Background] Starting scan on tab:",
+        tab.id,
+        "with metrics:",
+        metricsKeys
+      );
 
       activeScan = {
         url: tab.url || "",
         overallScore: 0,
-        metrics: {
-          ...metricsKeys.map((metric) => {
-            return { [metric]: null };
-          }),
-        },
+        metrics: {},
         findings: [],
       };
 
@@ -48,24 +60,25 @@ runtime.onMessage.addListener((message: { type: string; payload?: any }) => {
     const metric = message.payload.metric;
     const data = message.payload.data;
 
-    console.log(`[Background] Received scan result for metric: ${metric}`, data);
+    console.log(
+      `[Background] Received scan result for metric: ${metric}`,
+      data
+    );
 
     activeScan.metrics[metric] = data;
 
     console.log("[Background] Updated activeScan:", activeScan);
 
-    const scores = Object.values(activeScan.metrics).map(
-      (m: any) => m.score || 0
-    );
-    activeScan.overallScore =
-      scores.reduce((acc, val) => acc + val, 0) / scores.length;
-
-    const expectedMetricsCount = Object.keys(activeScan.metrics).length;
-    const receivedMetricsCount = Object.values(activeScan.metrics).filter(
-      (m) => m !== null
-    ).length;
+    const expectedMetricsCount = metricsRequested.length;
+    const receivedMetricsCount = Object.keys(activeScan.metrics).length;
 
     if (expectedMetricsCount === receivedMetricsCount) {
+      const scores = Object.values(activeScan.metrics).map(
+        (m: any) => m.score || 0
+      );
+      activeScan.overallScore =
+        scores.reduce((acc, val) => acc + val, 0) / scores.length;
+
       runtime.sendMessage({
         type: "SCAN_RESULT",
         payload: activeScan,

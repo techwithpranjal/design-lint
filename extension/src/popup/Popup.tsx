@@ -86,10 +86,10 @@ export default function Popup() {
   };
 
   const onStartScanHandler = (metrics: {
-    accessibility: boolean;
-    readability: boolean;
-    layout_density: boolean;
-    visual_hierarchy: boolean;
+    Accessibility: boolean;
+    Readability: boolean;
+    "Layout Density": boolean;
+    "Visual Hierarchy": boolean;
   }) => {
     console.log("Starting scan with metrics:", metrics);
 

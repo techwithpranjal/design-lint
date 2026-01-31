@@ -39,10 +39,10 @@ export default function NewScanState({
   ];
 
   const [metrics, setMetrics] = useState({
-    accessibility: true,
-    readability: true,
-    layout_density: true,
-    visual_hierarchy: true,
+    Accessibility: true,
+    Readability: true,
+    "Layout Density": true,
+    "Visual Hierarchy": true,
   });
 
   return (
@@ -70,11 +70,11 @@ export default function NewScanState({
                 <input
                   type="checkbox"
                   className="accent-cyan-400"
-                  checked={metrics[metric.key as keyof typeof metrics]}
+                  checked={metrics[metric.label as keyof typeof metrics]}
                   onChange={(e) =>
                     setMetrics((prev) => ({
                       ...prev,
-                      [metric.key]: e.target.checked,
+                      [metric.label]: e.target.checked,
                     }))
                   }
                 />
