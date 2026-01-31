@@ -30,6 +30,19 @@ runtime.onMessage.addListener((message: any) => {
         },
       });
     }
+
+    if (metric === "Layout Density") {
+      const blocks = getVisibleLayoutBlocks();
+      const layoutStats = analyzeLayoutDensity(blocks);
+
+      runtime.sendMessage({
+        type: "METRIC_SCAN_RESULT",
+        payload: {
+          metric: "Layout Density",
+          data: layoutStats,
+        },
+      });
+    }
   }
 });
 
@@ -218,4 +231,91 @@ function readabilityFindings(data: {
   }
 
   return findings.slice(0, 3);
+}
+
+function analyzeLayoutDensity(blocks: HTMLElement[]) {
+  const depths = blocks.map(getDomDepth);
+  const maxDepth = Math.max(...depths, 0);
+  const avgDepth = Math.round(
+    depths.reduce((a, b) => a + b, 0) / Math.max(depths.length, 1)
+  );
+
+  const avgSpacing = getAverageVerticalSpacing(blocks);
+  const visibleSections = blocks.length;
+
+  let score = 100;
+
+  if (visibleSections > 40) score -= 20;
+  if (visibleSections > 60) score -= 20;
+
+  if (avgSpacing < 16) score -= 15;
+  if (avgSpacing < 8) score -= 15;
+
+  if (maxDepth > 7) score -= 15;
+  if (maxDepth > 10) score -= 15;
+
+  score = Math.max(0, Math.min(100, score));
+
+  let densityLabel: "Sparse" | "Balanced" | "Dense" = "Balanced";
+  if (score >= 75) densityLabel = "Balanced";
+  else if (score >= 50) densityLabel = "Dense";
+  else densityLabel = "Dense";
+
+  return {
+    score,
+    densityLabel,
+    visibleSections,
+    avgSpacing,
+    maxDepth,
+    avgDepth,
+  };
+}
+
+function getVisibleLayoutBlocks(): HTMLElement[] {
+  const candidates = Array.from(
+    document.querySelectorAll(
+      "section, article, main, nav, aside, header, footer, div"
+    )
+  ) as HTMLElement[];
+
+  return candidates.filter((el) => {
+    const rect = el.getBoundingClientRect();
+    const style = window.getComputedStyle(el);
+
+    return (
+      rect.width > 0 &&
+      rect.height > 0 &&
+      style.display !== "none" &&
+      style.visibility !== "hidden"
+    );
+  });
+}
+
+function getDomDepth(el: HTMLElement): number {
+  let depth = 0;
+  let current: HTMLElement | null = el;
+
+  while (current && current !== document.body) {
+    depth++;
+    current = current.parentElement;
+  }
+
+  return depth;
+}
+
+function getAverageVerticalSpacing(elements: HTMLElement[]): number {
+  const gaps: number[] = [];
+
+  for (let i = 1; i < elements.length; i++) {
+    const prev = elements[i - 1].getBoundingClientRect();
+    const curr = elements[i].getBoundingClientRect();
+    const gap = curr.top - prev.bottom;
+
+    if (gap > 0 && gap < 500) {
+      gaps.push(gap);
+    }
+  }
+
+  if (!gaps.length) return 0;
+  return Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length);
 }

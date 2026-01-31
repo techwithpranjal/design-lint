@@ -33,6 +33,16 @@ export default function MetricDetailView({
         return "Text is moderately readable but may require effort for some users.";
       }
       return "Text is difficult to read and may overwhelm users with long sentences or dense paragraphs.";
+    } else if (label === "Layout Density") {
+      const score = data.score || 0;
+
+      if (score >= 75) {
+        return "Layout is well spaced and structured, making content easy to scan and navigate.";
+      }
+      if (score >= 50) {
+        return "Layout is somewhat dense with signs of crowding or deep nesting.";
+      }
+      return "Layout is visually dense and cluttered, which may overwhelm users and reduce clarity.";
     }
   }
 
@@ -139,6 +149,77 @@ export default function MetricDetailView({
               {data.findings?.map((finding: string, idx: number) => (
                 <li key={idx}>{finding}</li>
               ))}
+            </ul>
+          </div>
+        </>
+      )}
+
+      {label === "Layout Density" && (
+        <>
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-3">Layout structure</div>
+
+            <div className="space-y-2 text-xs text-zinc-400">
+              <div className="flex justify-between">
+                <span>Visible sections</span>
+                <span>{data.visibleSections}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Average vertical spacing</span>
+                <span>{data.avgSpacing}px</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Average DOM depth</span>
+                <span>{data.avgDepth}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Maximum DOM depth</span>
+                <span>{data.maxDepth}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="text-sm text-zinc-200 mb-2">Layout assessment</div>
+
+            <ul className="space-y-1 text-xs text-zinc-500 list-disc list-inside">
+              {data.visibleSections > 12 && (
+                <li>
+                  High number of visible sections may reduce scannability on
+                  first glance.
+                </li>
+              )}
+
+              {data.avgSpacing < 12 && (
+                <li>
+                  Tight vertical spacing between elements can make content feel
+                  crowded.
+                </li>
+              )}
+
+              {data.maxDepth > 8 && (
+                <li>
+                  Deeply nested layout structure may increase cognitive load and
+                  maintenance complexity.
+                </li>
+              )}
+
+              {data.avgDepth > 5 && (
+                <li>
+                  Many elements are nested several levels deep, indicating
+                  structural complexity.
+                </li>
+              )}
+
+              {data.densityLabel === "Balanced" && (
+                <li>
+                  Layout structure appears balanced with clear separation
+                  between content sections.
+                </li>
+              )}
             </ul>
           </div>
         </>

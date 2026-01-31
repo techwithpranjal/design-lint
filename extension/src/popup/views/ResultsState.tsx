@@ -60,7 +60,7 @@ export default function ResultsView({ onNewScan }: { onNewScan: () => void }) {
               <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4">
                 <div className="text-xs text-zinc-500">Overall score</div>
                 <div className="mt-1 text-3xl font-semibold text-cyan-400">
-                  {result?.overallScore ?? "N/A"}%
+                  {result?.overallScore.toFixed(2) ?? "N/A"}%
                 </div>
                 <div className="mt-1 text-xs text-zinc-500">
                   Balanced design with room for improvement. Click on a metric to view more details.

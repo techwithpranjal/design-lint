@@ -28,13 +28,13 @@ export default function NewScanState({
       key: "layout_density",
       label: "Layout Density",
       description:
-        "Evaluates structure and spacing, how well is the content organized.",
+        "Measures structure and spacing, how well is the content organized.",
     },
     {
       key: "visual_hierarchy",
       label: "Visual Hierarchy",
       description:
-        "Measures clutter and element distribution, how the page feels at a glance.",
+        "Measures visual emphasis, how easily users can identify what matters most.",
     },
   ];
 
