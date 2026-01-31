@@ -142,7 +142,7 @@ export default function ResultsView({ onNewScan }: { onNewScan: () => void }) {
                        hover:border-cyan-400 hover:bg-zinc-900/60 transition"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-zinc-200 mr-8">{label}</span>
+                      <span className="text-sm text-zinc-200 mr-4">{label}</span>
                       <span className="text-sm text-cyan-400 font-medium">
                         {data.score}
                       </span>
