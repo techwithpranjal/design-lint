@@ -184,7 +184,7 @@ export default function MetricDetailView({
                       : "text-emerald-400"
                   }
                 >
-                  {data.longParagraphs}
+                  {data.readingTime} mins
                 </span>
               </div>
             </div>
