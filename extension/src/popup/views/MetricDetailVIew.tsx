@@ -72,11 +72,6 @@ export default function MetricDetailView({
               {data.score}
             </span>
             <span className="text-xs text-zinc-500">/ 100</span>
-            {label === "Readability" && (
-              <span className="ml-2 text-xs text-zinc-400">
-                Grade: {data.grade} · ~{data.readingTime} min read
-              </span>
-            )}
           </div>
         </div>
 
@@ -170,6 +165,21 @@ export default function MetricDetailView({
                     data.longParagraphs > 3
                       ? "text-red-400"
                       : data.longParagraphs > 0
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.longParagraphs}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-zinc-400">
+                <span>Read Time</span>
+                <span
+                  className={
+                    data.readingTime > 20
+                      ? "text-red-400"
+                      : data.readingTime > 10
                       ? "text-yellow-400"
                       : "text-emerald-400"
                   }
