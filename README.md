@@ -145,12 +145,31 @@ Visual Hierarchy evaluates whether the page clearly communicates **what matters 
 
 ## Screenshots
 
-_Add screenshots here:_
-1. Empty state  
-2. Metric selection screen  
-3. Loading / scan state  
-4. Results overview  
-5. Metric detail views  
+> Screenshots are listed in the same order as the user workflow.
+
+### 1. Empty state (no scans yet)
+![Empty state](/extension/src/assets/asset1.png)
+
+### 2. New scan – metric selection
+![Metric selection](/extension/src/assets/asset2.png)
+
+### 3. Scan in progress (loading state)
+![Loading state](/extension/src/assets/asset3.png)
+
+### 4. Results overview
+![Results overview](/extension/src/assets/asset4.png)
+
+### 5. Accessibility – detailed view
+![Accessibility details](/extension/src/assets/asset5.png)
+
+### 6. Readability – detailed view
+![Readability details](/extension/src/assets/asset6.png)
+
+### 7. Layout density – detailed view
+![Layout density details](/extension/src/assets/asset7.png)
+
+### 8. Visual hierarchy – detailed view
+![Visual hierarchy details](/extension/src/assets/asset8.png)
 
 
 
