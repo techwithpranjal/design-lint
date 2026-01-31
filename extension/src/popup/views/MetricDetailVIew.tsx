@@ -133,19 +133,49 @@ export default function MetricDetailView({
             </div>
 
             <div className="space-y-2 text-xs text-zinc-400">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Average sentence length</span>
-                <span>{data.avgSentenceLength} words</span>
+                <span
+                  className={
+                    data.avgSentenceLength > 25
+                      ? "text-red-400"
+                      : data.avgSentenceLength > 20
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.avgSentenceLength} words
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Average paragraph length</span>
-                <span>{data.avgParagraphLength} words</span>
+                <span
+                  className={
+                    data.avgParagraphLength > 100
+                      ? "text-red-400"
+                      : data.avgParagraphLength > 70
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.avgParagraphLength} words
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Long paragraphs</span>
-                <span>{data.longParagraphs}</span>
+                <span
+                  className={
+                    data.longParagraphs > 3
+                      ? "text-red-400"
+                      : data.longParagraphs > 0
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.longParagraphs}
+                </span>
               </div>
             </div>
           </div>
@@ -168,24 +198,64 @@ export default function MetricDetailView({
             <div className="text-sm text-zinc-200 mb-3">Layout structure</div>
 
             <div className="space-y-2 text-xs text-zinc-400">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Visible sections</span>
-                <span>{data.visibleSections}</span>
+                <span
+                  className={
+                    data.visibleSections > 12
+                      ? "text-red-400"
+                      : data.visibleSections > 8
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.visibleSections}
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Average vertical spacing</span>
-                <span>{data.avgSpacing}px</span>
+                <span
+                  className={
+                    data.avgSpacing < 12
+                      ? "text-red-400"
+                      : data.avgSpacing < 20
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.avgSpacing}px
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Average DOM depth</span>
-                <span>{data.avgDepth}</span>
+                <span
+                  className={
+                    data.avgSpacing < 12
+                      ? "text-red-400"
+                      : data.avgSpacing < 20
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.avgDepth}
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Maximum DOM depth</span>
-                <span>{data.maxDepth}</span>
+                <span
+                  className={
+                    data.maxDepth > 8
+                      ? "text-red-400"
+                      : data.maxDepth > 6
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.maxDepth}
+                </span>
               </div>
             </div>
           </div>
@@ -241,24 +311,64 @@ export default function MetricDetailView({
             </div>
 
             <div className="space-y-2 text-xs text-zinc-400">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Primary focus elements</span>
-                <span>{data.primaryFocusCount}</span>
+                <span
+                  className={
+                    data.primaryFocusCount > 3
+                      ? "text-red-400"
+                      : data.primaryFocusCount > 1
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.primaryFocusCount}
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Heading size variance</span>
-                <span>{data.headingScaleVariance}px</span>
+                <span
+                  className={
+                    data.headingScaleVariance < 6
+                      ? "text-red-400"
+                      : data.headingScaleVariance < 12
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.headingScaleVariance}px
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>Emphasis contrast score</span>
-                <span>{data.emphasisContrastScore}</span>
+                <span
+                  className={
+                    data.headingScaleVariance < 6
+                      ? "text-red-400"
+                      : data.headingScaleVariance < 12
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.emphasisContrastScore}
+                </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between text-zinc-400">
                 <span>CTA visibility score</span>
-                <span>{data.ctaVisibilityScore}</span>
+                <span
+                  className={
+                    data.ctaVisibilityScore < 40
+                      ? "text-red-400"
+                      : data.ctaVisibilityScore < 70
+                      ? "text-yellow-400"
+                      : "text-emerald-400"
+                  }
+                >
+                  {data.ctaVisibilityScore}
+                </span>
               </div>
             </div>
           </div>
