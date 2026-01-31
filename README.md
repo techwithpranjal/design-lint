@@ -5,7 +5,7 @@ A lightweight browser extension that analyzes any webpage for **design quality s
 DesignLint is intentionally built as a **design-linting demo**, not a production SaaS.  
 Its goal is to demonstrate **frontend architecture, browser extension fundamentals, DOM analysis, and UX reasoning**.
 
----
+
 
 ## Why DesignLint Exists
 
@@ -21,7 +21,7 @@ This project was built to:
 - Show how design, accessibility, and frontend engineering intersect
 - Serve as a **portfolio-grade demo**, not a toy app
 
----
+
 
 ## What DesignLint Does
 
@@ -36,7 +36,7 @@ When you run a scan on the current page, DesignLint:
 All analysis runs **locally in the browser**.  
 No data is sent to any backend.
 
----
+
 
 ## Metrics Analyzed
 
@@ -53,7 +53,7 @@ No data is sent to any backend.
 - Severity breakdown
 - Top accessibility issues
 
----
+
 
 ### 2. Readability
 **How easy is the content to read and understand?**
@@ -68,7 +68,7 @@ No data is sent to any backend.
 - Text structure statistics
 - Key findings
 
----
+
 
 ### 3. Layout Density
 **How organized is the page structure?**
@@ -82,7 +82,7 @@ No data is sent to any backend.
 - Structural metrics
 - Layout assessment findings
 
----
+
 
 ### 4. Visual Hierarchy
 **What stands out at a glance?**
@@ -97,29 +97,6 @@ No data is sent to any backend.
 - Emphasis metrics
 - Visual hierarchy findings
 
----
-
-## How Scoring Works
-
-- Each metric is scored independently
-- Scores range from 0–100
-- Heuristic-based and explainable
-- Overall score reflects enabled metrics only
-
----
-
-## Extension Flow
-
-1. Open extension popup
-2. Empty state if no previous scan
-3. Click **New Scan**
-4. Select metrics to analyze
-5. Scan runs on active tab
-6. Loader state during analysis
-7. Results overview appears
-8. Click metrics for detailed views
-
----
 
 ## Screenshots
 
@@ -130,7 +107,7 @@ _Add screenshots here:_
 4. Results overview
 5. Metric detail views
 
----
+
 
 ## Tech Stack
 
@@ -150,7 +127,7 @@ _Add screenshots here:_
 ### Analysis
 - axe-core (accessibility)
 
----
+
 
 ## Who Is This For
 
@@ -161,7 +138,7 @@ _Add screenshots here:_
 - Product teams
 - Recruiters reviewing frontend systems work
 
----
+
 
 ## Installation (Demo)
 
@@ -177,7 +154,7 @@ https://github.com/techwithpranjal/design-lint/releases/tag/v1.0.0
 3. Click **Load unpacked**
 4. Select the extracted build folder
 
----
+
 
 ## Local Development
 
