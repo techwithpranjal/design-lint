@@ -2,12 +2,6 @@
 
 DesignLint is a lightweight browser extension that analyzes any webpage for **design quality signals** such as accessibility, readability, layout density, and visual hierarchy — and presents the results in a clean, developer-friendly interface.
 
-This project is intentionally built as a **design-linting demo**, not a production SaaS.  
-Its purpose is to demonstrate **browser extension architecture, DOM analysis, UX reasoning, and frontend systems thinking**.
-
-## Screenshots
-
-> Screenshots are listed in the same order as the user workflow.
 
 ### 1. Empty state (no scans yet)
 <img src="/extension/src/assets/asset1.png" width="360" alt="Empty state" />
