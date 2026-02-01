@@ -5,6 +5,33 @@ DesignLint is a lightweight browser extension that analyzes any webpage for **de
 This project is intentionally built as a **design-linting demo**, not a production SaaS.  
 Its purpose is to demonstrate **browser extension architecture, DOM analysis, UX reasoning, and frontend systems thinking**.
 
+## Screenshots
+
+> Screenshots are listed in the same order as the user workflow.
+
+### 1. Empty state (no scans yet)
+<img src="/extension/src/assets/asset1.png" width="360" alt="Empty state" />
+
+### 2. New scan – metric selection
+<img src="/extension/src/assets/asset2.png" width="360" alt="Metric selection" />
+
+### 3. Scan in progress (loading state)
+<img src="/extension/src/assets/asset3.png" width="360" alt="Loading state" />
+
+### 4. Results overview
+<img src="/extension/src/assets/asset4.png" width="360" alt="Results overview" />
+
+### 5. Accessibility – detailed view
+<img src="/extension/src/assets/asset5.png" width="360" alt="Accessibility details" />
+
+### 7. Layout density – detailed view
+<img src="/extension/src/assets/asset6.png" width="360" alt="Layout density details" />
+
+### 7. Readability – detailed view
+<img src="/extension/src/assets/asset7.png" width="360" alt="Readability details" />
+
+### 8. Visual hierarchy – detailed view
+<img src="/extension/src/assets/asset8.png" width="360" alt="Visual hierarchy details" />
 
 
 ## Why DesignLint Exists
@@ -141,35 +168,6 @@ Visual Hierarchy evaluates whether the page clearly communicates **what matters 
 - Emphasis and contrast metrics
 - Visual hierarchy findings explaining attention conflicts
 
-
-
-## Screenshots
-
-> Screenshots are listed in the same order as the user workflow.
-
-### 1. Empty state (no scans yet)
-<img src="/extension/src/assets/asset1.png" width="360" alt="Empty state" />
-
-### 2. New scan – metric selection
-<img src="/extension/src/assets/asset2.png" width="360" alt="Metric selection" />
-
-### 3. Scan in progress (loading state)
-<img src="/extension/src/assets/asset3.png" width="360" alt="Loading state" />
-
-### 4. Results overview
-<img src="/extension/src/assets/asset4.png" width="360" alt="Results overview" />
-
-### 5. Accessibility – detailed view
-<img src="/extension/src/assets/asset5.png" width="360" alt="Accessibility details" />
-
-### 7. Layout density – detailed view
-<img src="/extension/src/assets/asset6.png" width="360" alt="Layout density details" />
-
-### 7. Readability – detailed view
-<img src="/extension/src/assets/asset7.png" width="360" alt="Readability details" />
-
-### 8. Visual hierarchy – detailed view
-<img src="/extension/src/assets/asset8.png" width="360" alt="Visual hierarchy details" />
 
 
 
